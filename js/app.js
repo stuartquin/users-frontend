@@ -1,8 +1,21 @@
 App = Ember.Application.create();
+App.UsersRESTAdapter = DS.RESTAdapter.extend({
+    url: "http://localhost:3000",
+    serializer: DS.RESTSerializer.extend({
+        primaryKey: function(type) {
+            return '_id';
+        }
+    })
+});
+
+App.Store = DS.Store.extend({
+  adapter: App.UsersRESTAdapter
+});
 
 App.Router.map(function() {
   this.resource("users", function(){
     this.resource("user", {path: ":_id"});
+    this.resource("user/add");
   });
 });
 
@@ -17,20 +30,8 @@ App.UsersRoute = Ember.Route.extend({
 App.User = DS.Model.extend({
   email: DS.attr("string"),
   password: DS.attr("string"),
-  created_at: DS.attr("string")
-});
-
-App.UsersRESTAdapter = DS.RESTAdapter.extend({
-    url: "http://localhost:3000",
-    serializer: DS.RESTSerializer.extend({
-        primaryKey: function(type) {
-            return '_id';
-        }
-    })
-});
-
-App.Store = DS.Store.extend({
-  adapter: App.UsersRESTAdapter
+  created_at: DS.attr("date"),
+  login_attempts: DS.attr("number")
 });
 
 
@@ -38,9 +39,6 @@ App.UserRoute = Ember.Route.extend({
   model: function(params) {
     return App.User.find(params._id);
   }
-});
-
-App.UsersController = Ember.ArrayController.extend({
 });
 
 App.UserController = Ember.ObjectController.extend({
