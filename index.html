@@ -30,6 +30,8 @@
 
   <script type="text/x-handlebars" id="users">
     <div class="span3">
+      {{#link-to "users.add"}}Add{{/link-to}}
+      <hr />
       <ul>
       {{#each controller}}
         <li>{{#link-to "user" this}}{{email}}{{/link-to}}</li>
@@ -39,6 +41,16 @@
     <div class="span9">
       {{outlet}}
     </div>
+  </script>
+
+  <script type="text/x-handlebars" id="users/add">
+    <p>
+      <strong>Email:</strong>{{input type="text" value=email}}
+    </p>
+    <p>
+      <strong>Password:</strong>{{input type="password" value=password}}
+    </p>
+    <input type="submit" value="Add" />
   </script>
 
   <script type="text/x-handlebars" id="user">

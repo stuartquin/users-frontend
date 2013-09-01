@@ -15,17 +15,9 @@ App.Store = DS.Store.extend({
 App.Router.map(function() {
   this.resource("users", function(){
     this.resource("user", {path: ":_id"});
-    this.resource("user/add");
+    this.route("add");
   });
 });
-
-App.UsersRoute = Ember.Route.extend({
-  model: function(){
-    var users = App.User.find();
-    return users;
-  },
-});
-
 
 App.User = DS.Model.extend({
   email: DS.attr("string"),
@@ -34,6 +26,11 @@ App.User = DS.Model.extend({
   login_attempts: DS.attr("number")
 });
 
+App.UsersRoute = Ember.Route.extend({
+  model: function(){
+    return App.User.find();
+  },
+});
 
 App.UserRoute = Ember.Route.extend({
   model: function(params) {
