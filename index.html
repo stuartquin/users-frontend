@@ -34,7 +34,7 @@
       <hr />
       <ul>
       {{#each controller}}
-        <li>{{#link-to "user" this}}{{email}}{{/link-to}}</li>
+        <li>{{#link-to "users.edit" this}}{{email}}{{/link-to}}</li>
       {{/each}}
       </ul>
     </div>
@@ -43,28 +43,7 @@
     </div>
   </script>
 
-
-  <script type="text/x-handlebars" id="user">
-    <h3>{{email}}</h3>
-    {{#if isEditing}}
-      {{partial "user/edit"}}
-    {{else}}
-      <button class="button" {{action "toggleEdit"}}>Edit</button>
-    {{/if}}
-
-    <hr />
-    <p>
-      <strong>Email:</strong>{{email}}
-    </p>
-    <p>
-      <strong>Created:</strong>{{format-date created_at}}
-    </p>
-    <p>
-      <strong>Login Attempts:</strong>{{login_attempts}}
-    </p>
-  </script>
-
-  <script type="text/x-handlebars" id="user/_edit">
+  <script type="text/x-handlebars" id="users/edit">
     {{#if isNew}}
     <h3>New user</h3>
     {{else}}
@@ -92,6 +71,5 @@
   <script src="js/libs/ember-data.min.js"></script>
   <script src="js/libs/moment.min.js"></script>
   <script src="js/app.js"></script>
-
 </body>
 </html>

@@ -1,11 +1,11 @@
 App = Ember.Application.create();
 App.UsersRESTAdapter = DS.RESTAdapter.extend({
-    url: "http://localhost:3000",
-    serializer: DS.RESTSerializer.extend({
-        primaryKey: function(type) {
-            return '_id';
-        }
-    })
+  url: "http://localhost:3000",
+  serializer: DS.RESTSerializer.extend({
+    primaryKey: function(type) {
+      return '_id';
+    }
+  })
 });
 
 App.Store = DS.Store.extend({
@@ -14,10 +14,8 @@ App.Store = DS.Store.extend({
 
 App.Router.map(function() {
   this.resource("users", function(){
-    this.resource("user", {path: ":_id"}, function(){
-      this.route("edit");
-    });
     this.route("new");
+    this.route("edit", {path: ":_id"});
   });
 });
 
@@ -34,9 +32,13 @@ App.UsersRoute = Ember.Route.extend({
   },
 });
 
-App.UserRoute = Ember.Route.extend({
+App.UsersEditRoute = Ember.Route.extend({
   model: function(params) {
     return App.User.find(params._id);
+  },
+  setupController: function(controller, model){
+    controller.set("isNew", false);
+    controller.set("model", model);
   }
 });
 
@@ -45,35 +47,19 @@ App.UserRoute = Ember.Route.extend({
  */
 App.UsersNewRoute = Ember.Route.extend({
   setupController: function(controller, model){
-    var controller = this.controllerFor("user.edit");
+    var controller = this.controllerFor("users.edit");
     controller.set("model", App.User.createRecord());
     controller.set("isNew", true);
   },
   renderTemplate: function(){
-    this.render("user._edit");
+    this.render("users/edit");
   }
 });
 
-App.UserEditController = Ember.ObjectController.extend({
+App.UsersEditController = Ember.ObjectController.extend({
   isNew: false,
   actions: {
     save: function(user){
-      user.transaction.commit();
-    }
-  }
-});
-
-/**
- * UserController handles both editing and viewing of existing users
- */
-App.UserController = Ember.ObjectController.extend({
-  isEditing: false,
-  isNew: false,
-  actions: {
-    toggleEdit: function(){
-      this.set("isEditing", !this.isEditing);
-    },
-    save: function(user){ this.set("isEditing", false);
       user.transaction.commit();
     }
   }
