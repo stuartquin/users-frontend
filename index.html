@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Ember Starter Kit</title>
+  <link rel="stylesheet" href="css/normalize.css"/>
+  <link rel="stylesheet" href="bootstrap/css/bootstrap.css"/>
+  <link rel="stylesheet" href="css/flat-ui.css"/>
+  <link rel="stylesheet" href="css/style.css"/>
+</head>
+<body>
+
+  <script type="text/x-handlebars">
+    <div class="row">
+      <div class="navbar navbar-inverse">
+        <div class="navbar-inner">
+          <ul class="nav">
+            <li>
+              {{#link-to "users"}}Users{{/link-to}}
+            </li>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      {{outlet}}
+    </div>
+  </script>
+
+  <script type="text/x-handlebars" id="users">
+    <div class="span3">
+      <ul>
+      {{#each}}
+        <li>{{#link-to "user" this}}{{email}}{{/link-to}}</li>
+      {{/each}}
+      </ul>
+    </div>
+    <div class="span9">
+      {{outlet}}
+    </div>
+  </script>
+
+  <script type="text/x-handlebars" id="user">
+    <h3>{{email}}</h3>
+    {{#if isEditing}}
+      {{partial "user/edit"}}
+      <button class="button" {{action "save"}}>Save</button>
+      <button class="button" {{action "toggleEdit"}}>Cancel</button>
+    {{else}}
+      <button class="button" {{action "toggleEdit"}}>Edit</button>
+    {{/if}}
+
+    <hr />
+    <p>
+      <strong>Email:</strong>{{email}}
+    </p>
+    <p>
+      <strong>Created:</strong>{{format-date created_at}}
+    </p>
+    <p>
+      <strong>Login Attempts:</strong>{{login_attempts}}
+    </p>
+  </script>
+
+  <script type="text/x-handlebars" id="user/_edit">
+    <p>
+      <strong>Email:</strong>{{input type="text" value=email}}
+    </p>
+    <p>
+      <strong>Password:</strong>{{input type="password" value=password}}
+    </p>
+    <p>
+      <strong>Login Attempts:</strong>{{login_attempts}}
+    </p>
+  </script>
+
+  <script src="js/libs/jquery-1.9.1.js"></script>
+  <script src="js/libs/handlebars-1.0.0.js"></script>
+  <script src="js/libs/ember-1.0.0.js"></script>
+  <script src="js/libs/moment.min.js"></script>
+  <script src="js/app.js"></script>
+
+</body>
+</html>
