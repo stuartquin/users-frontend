@@ -30,7 +30,7 @@
 
   <script type="text/x-handlebars" id="users">
     <div class="span3">
-      {{#link-to "users.add"}}Add{{/link-to}}
+      {{#link-to "users.new"}}Add{{/link-to}}
       <hr />
       <ul>
       {{#each controller}}
@@ -43,22 +43,11 @@
     </div>
   </script>
 
-  <script type="text/x-handlebars" id="users/add">
-    <p>
-      <strong>Email:</strong>{{input type="text" value=email}}
-    </p>
-    <p>
-      <strong>Password:</strong>{{input type="password" value=password}}
-    </p>
-    <input type="submit" value="Add" />
-  </script>
 
   <script type="text/x-handlebars" id="user">
     <h3>{{email}}</h3>
     {{#if isEditing}}
       {{partial "user/edit"}}
-      <button class="button" {{action "save"}}>Save</button>
-      <button class="button" {{action "toggleEdit"}}>Cancel</button>
     {{else}}
       <button class="button" {{action "toggleEdit"}}>Edit</button>
     {{/if}}
@@ -76,6 +65,14 @@
   </script>
 
   <script type="text/x-handlebars" id="user/_edit">
+    {{#if isNew}}
+    <h3>New user</h3>
+    {{else}}
+    <h3>{{name}}</h3>
+    {{/if}}
+    <p>
+      <strong>Name:</strong>{{input type="text" value=name}}
+    </p>
     <p>
       <strong>Email:</strong>{{input type="text" value=email}}
     </p>
@@ -85,6 +82,8 @@
     <p>
       <strong>Login Attempts:</strong>{{login_attempts}}
     </p>
+    <button class="button" {{action "save" this}}>Save</button>
+    <button class="button" {{action "toggleEdit"}}>Cancel</button>
   </script>
 
   <script src="js/libs/jquery-1.9.1.js"></script>
