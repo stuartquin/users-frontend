@@ -46,10 +46,26 @@ App.UserRoute = Ember.Route.extend({
  */
 App.UsersNewRoute = Ember.Route.extend({
   setupController: function(controller, model){
-    this.controllerFor("user").set("model", App.User.createRecord());
+    var controller = this.controllerFor("user.edit");
+    controller.set("model",App.User.createRecord());
+    controller.set("isNew", true);
   },
   renderTemplate: function(){
     this.render("user._edit");
+  }
+});
+
+App.UserEditController = Ember.ObjectController.extend({
+  isEditing: false,
+  isNew: "TEST",
+  actions: {
+    toggleEdit: function(){
+      this.set("isEditing", !this.isEditing);
+    },
+    save: function(user){
+      this.set("isEditing", false);
+      user.transaction.commit();
+    }
   }
 });
 
@@ -58,7 +74,7 @@ App.UsersNewRoute = Ember.Route.extend({
  */
 App.UserController = Ember.ObjectController.extend({
   isEditing: false,
-  isNew: false,
+  isNew: "TEST",
   actions: {
     toggleEdit: function(){
       this.set("isEditing", !this.isEditing);
