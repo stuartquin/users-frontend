@@ -25,7 +25,6 @@ App.User = DS.Model.extend({
   email: DS.attr("string"),
   name: DS.attr("string"),
   password: DS.attr("string"),
-  created_at: DS.attr("date"),
   login_attempts: DS.attr("number")
 });
 
@@ -47,7 +46,7 @@ App.UserRoute = Ember.Route.extend({
 App.UsersNewRoute = Ember.Route.extend({
   setupController: function(controller, model){
     var controller = this.controllerFor("user.edit");
-    controller.set("model",App.User.createRecord());
+    controller.set("model", App.User.createRecord());
     controller.set("isNew", true);
   },
   renderTemplate: function(){
@@ -56,14 +55,9 @@ App.UsersNewRoute = Ember.Route.extend({
 });
 
 App.UserEditController = Ember.ObjectController.extend({
-  isEditing: false,
-  isNew: "TEST",
+  isNew: false,
   actions: {
-    toggleEdit: function(){
-      this.set("isEditing", !this.isEditing);
-    },
     save: function(user){
-      this.set("isEditing", false);
       user.transaction.commit();
     }
   }
@@ -74,13 +68,12 @@ App.UserEditController = Ember.ObjectController.extend({
  */
 App.UserController = Ember.ObjectController.extend({
   isEditing: false,
-  isNew: "TEST",
+  isNew: false,
   actions: {
     toggleEdit: function(){
       this.set("isEditing", !this.isEditing);
     },
-    save: function(user){
-      this.set("isEditing", false);
+    save: function(user){ this.set("isEditing", false);
       user.transaction.commit();
     }
   }
