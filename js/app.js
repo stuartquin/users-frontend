@@ -8,32 +8,40 @@ App.Router.map(function() {
 
 App.UsersRoute = Ember.Route.extend({
   model: function(){
-    // getJSON returns a promise
-    return $.getJSON("http://localhost:3000/users").then(function(data){
-      return data.map(function(user){
-        user.id = user._id;
-        return user;
-      });
-    });
+    var users = App.User.find();
+    return users;
   },
 });
 
+
+App.User = DS.Model.extend({
+  email: DS.attr("string"),
+  password: DS.attr("string"),
+  created_at: DS.attr("string")
+});
+
+DS.RESTAdapter.map('App.User', {
+  primaryKey: "_id"
+});
+
+App.Store = DS.Store.extend({
+  adapter: DS.RESTAdapter.create({
+    url: "http://localhost:3000"
+  })
+});
+
+
 App.UserRoute = Ember.Route.extend({
   model: function(params) {
-    var url = "http://localhost:3000/users?_id="+params._id;
-    return $.getJSON(url).then(function(data){
-      if( data.length ){
-        var user = data[0];
-        user.id = user._id;
-        return user;
-      }
-    });
+    return App.User.find(params._id);
   }
+});
+
+App.UsersController = Ember.ArrayController.extend({
 });
 
 App.UserController = Ember.ObjectController.extend({
   isEditing: false,
-
   actions: {
     toggleEdit: function(){
       this.set("isEditing", !this.isEditing);
