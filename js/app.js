@@ -20,14 +20,17 @@ App.User = DS.Model.extend({
   created_at: DS.attr("string")
 });
 
-DS.RESTAdapter.map('App.User', {
-  primaryKey: "_id"
+App.UsersRESTAdapter = DS.RESTAdapter.extend({
+    url: "http://localhost:3000",
+    serializer: DS.RESTSerializer.extend({
+        primaryKey: function(type) {
+            return '_id';
+        }
+    })
 });
 
 App.Store = DS.Store.extend({
-  adapter: DS.RESTAdapter.create({
-    url: "http://localhost:3000"
-  })
+  adapter: App.UsersRESTAdapter
 });
 
 
